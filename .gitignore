@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+.env
+
+# Logs
+*.log
+cf.log
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+
+# Build files
+build/
+dist/
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Testing
+coverage/
+*.lcov
+
+# Misc
+*.swp
+*.bak
+*.tmp
