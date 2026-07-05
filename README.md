@@ -37,13 +37,13 @@ git clone https://github.com/jojin1709/MCP-Terminal-Bridge.git
 cd MCP-Terminal-Bridge
 ```
 
-### 2. Install Node Dependencies
+### 3. Install Node Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Install Cloudflared
+### 4. Install Cloudflared
 
 **Kali Linux:**
 ```bash
@@ -54,6 +54,40 @@ cloudflared --version
 
 **Windows:**  
 Already bundled as `cloudflared.exe` in the project folder. No extra install needed.
+
+---
+
+## Burp Suite Extension (BurpBridge)
+
+The `BurpBridge/BurpBridgeExtension.java` file is the Burp Suite extension that enables all `burp_*` tools. It runs a small HTTP API inside Burp on `127.0.0.1:9876`.
+
+### Install in Burp Suite
+
+1. Open **Burp Suite**
+2. Go to **Extensions** tab → **Installed** → **Add**
+3. Set **Extension type** to `Java`
+4. Click **Select file** → choose `BurpBridge/BurpBridgeExtension.java`
+   > Burp compiles it automatically — no build step needed
+5. Click **Next** — check the **Output** tab for:
+   ```
+   BurpBridge listening on 127.0.0.1:9876
+   ```
+
+### Verify the Extension is Running
+
+**Kali Linux:**
+```bash
+curl http://127.0.0.1:9876/proxy/history
+```
+
+**Windows (PowerShell):**
+```powershell
+Invoke-RestMethod http://127.0.0.1:9876/proxy/history
+```
+
+You should see a JSON array of your recent proxy requests.
+
+> 📖 See [`BurpBridge/README.md`](BurpBridge/README.md) for full build instructions, manual JAR packaging, and advanced config.
 
 ---
 
@@ -342,13 +376,16 @@ npm install
 
 ```
 mcp-terminal/
-├── server.js          # Main MCP + OAuth2 server
-├── start.sh           # Kali Linux startup script
-├── start.ps1          # Windows PowerShell startup script
-├── package.json       # Node.js dependencies
-├── cloudflared.exe    # Cloudflared binary for Windows
-├── cloudflared.deb    # Cloudflared package for Linux
-└── README.md          # This file
+├── server.js              # Main MCP + OAuth2 server
+├── start.sh               # Kali Linux startup script
+├── start.ps1              # Windows PowerShell startup script
+├── package.json           # Node.js dependencies
+├── cloudflared.exe        # Cloudflared binary for Windows (not in git)
+├── cloudflared.deb        # Cloudflared package for Linux (not in git)
+├── BurpBridge/
+│   ├── BurpBridgeExtension.java  # Burp Suite extension source
+│   └── README.md                 # Build & install instructions
+└── README.md              # This file
 ```
 
 ---
