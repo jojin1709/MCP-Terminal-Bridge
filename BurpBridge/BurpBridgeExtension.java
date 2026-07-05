@@ -36,7 +36,7 @@ public class BurpBridgeExtension implements BurpExtension {
         api.extension().setName("BurpBridge (MCP)");
 
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", PORT), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
             server.createContext("/proxy/history", this::handleProxyHistory);
             server.createContext("/repeater/send", this::handleRepeaterSend);
             server.createContext("/repeater/open", this::handleRepeaterOpen);
