@@ -117,11 +117,19 @@ function buildServer() {
     "burp_proxy_history",
     {
       title: "Burp proxy history",
-      description: "Get recent Burp proxy history (url, method, status, base64 raw request/response).",
-      inputSchema: {},
+      description: "Get recent Burp proxy history (url, method, status). Headers-only by default to keep results small and reliable; pass include_body=true for full base64 request/response bytes on a smaller/filtered set. Use scope_only=true to cut out browser noise (telemetry, ads, etc.) and only see traffic to your added scope.",
+      inputSchema: {
+        scope_only: z.boolean().optional().describe("Only return requests to hosts in Burp's scope (recommended - cuts out browser noise)"),
+        limit: z.number().optional().describe("Max entries to return, most recent first (default 100, max 500)"),
+        include_body: z.boolean().optional().describe("Include full base64 request/response bodies (default false - keep this off unless you actually need bodies, it's what causes oversized/unreliable responses)"),
+      },
     },
-    async () => {
-      const r = await fetch(`${BURP_BRIDGE_URL}/proxy/history`);
+    async ({ scope_only, limit, include_body }) => {
+      const qs = new URLSearchParams();
+      if (scope_only) qs.set("scope_only", "true");
+      if (limit) qs.set("limit", String(limit));
+      if (include_body) qs.set("include_body", "true");
+      const r = await fetch(`${BURP_BRIDGE_URL}/proxy/history?${qs}`);
       return { content: [{ type: "text", text: await r.text() }] };
     }
   );
@@ -130,11 +138,17 @@ function buildServer() {
     "burp_sitemap",
     {
       title: "Burp site map",
-      description: "Get Burp's site map entries (urls Burp has seen for the target).",
-      inputSchema: {},
+      description: "Get Burp's site map entries (urls Burp has seen for the target). Use scope_only=true to cut out noise.",
+      inputSchema: {
+        scope_only: z.boolean().optional().describe("Only return entries in Burp's scope"),
+        limit: z.number().optional().describe("Max entries to return (default 200, max 1000)"),
+      },
     },
-    async () => {
-      const r = await fetch(`${BURP_BRIDGE_URL}/sitemap`);
+    async ({ scope_only, limit }) => {
+      const qs = new URLSearchParams();
+      if (scope_only) qs.set("scope_only", "true");
+      if (limit) qs.set("limit", String(limit));
+      const r = await fetch(`${BURP_BRIDGE_URL}/sitemap?${qs}`);
       return { content: [{ type: "text", text: await r.text() }] };
     }
   );
