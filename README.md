@@ -63,14 +63,27 @@ The `BurpBridge/BurpBridgeExtension.java` file is the Burp Suite extension that 
 
 ### Install in Burp Suite
 
+**Option A — Prebuilt JAR (easiest, no Java setup needed):**
+
+1. Open **Burp Suite**
+2. Go to **Extensions** tab → **Installed** → **Add**
+3. Set **Extension type** to `Java`
+4. Click **Select file** → choose `BurpBridge/burp-bridge.jar`
+5. Click **Next** — check the **Output** tab for:
+   ```
+   BurpBridge listening on port 9876
+   ```
+
+**Option B — Load from source (Burp compiles it for you):**
+
 1. Open **Burp Suite**
 2. Go to **Extensions** tab → **Installed** → **Add**
 3. Set **Extension type** to `Java`
 4. Click **Select file** → choose `BurpBridge/BurpBridgeExtension.java`
-   > Burp compiles it automatically — no build step needed
+   > Burp compiles it automatically — no `javac` needed
 5. Click **Next** — check the **Output** tab for:
    ```
-   BurpBridge listening on 127.0.0.1:9876
+   BurpBridge listening on port 9876
    ```
 
 ### Verify the Extension is Running
@@ -384,6 +397,7 @@ mcp-terminal/
 ├── cloudflared.deb        # Cloudflared package for Linux (not in git)
 ├── BurpBridge/
 │   ├── BurpBridgeExtension.java  # Burp Suite extension source
+│   ├── burp-bridge.jar           # Prebuilt JAR (load directly into Burp)
 │   └── README.md                 # Build & install instructions
 └── README.md              # This file
 ```
