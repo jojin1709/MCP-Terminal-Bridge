@@ -1,6 +1,25 @@
 #!/bin/bash
 set -e
 
+# ── Check dependencies ───────────────────────────────────────────────────────
+if ! command -v cloudflared &>/dev/null; then
+  echo "[!] 'cloudflared' not found in PATH."
+  echo "    Install it with:"
+  echo "      wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb"
+  echo "      sudo dpkg -i cloudflared-linux-amd64.deb"
+  exit 1
+fi
+
+if ! command -v node &>/dev/null; then
+  echo "[!] 'node' not found in PATH. Install Node.js first."
+  exit 1
+fi
+
+if ! command -v openssl &>/dev/null; then
+  echo "[!] 'openssl' not found. Install it with: sudo apt-get install openssl"
+  exit 1
+fi
+
 echo "[*] Killing any old cloudflared/node processes..."
 pkill cloudflared 2>/dev/null || true
 pkill -f "node server.js" 2>/dev/null || true

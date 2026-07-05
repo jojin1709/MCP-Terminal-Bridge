@@ -5,6 +5,12 @@ node_modules/
 # Logs
 *.log
 cf.log
+cf.log.err
+
+# Cloudflared binaries (too large for GitHub — users download directly)
+cloudflared.exe
+cloudflared.deb
+*.deb
 
 # IDE files
 .vscode/
